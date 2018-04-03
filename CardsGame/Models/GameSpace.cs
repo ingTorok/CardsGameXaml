@@ -53,6 +53,7 @@ namespace CardsGame.Models
             SetNewGameCounters();
             EnableButtons();
             SetPendulumClock();
+            CardDeck = new CardDeck();
 
         }
 
@@ -67,7 +68,6 @@ namespace CardsGame.Models
         private void SetNewGameCounters()
         {
             RemainedTime = TimeSpan.FromSeconds(GameTime);
-            CardDeck = new CardDeck();
             ShowGameCounters();
         }
 
@@ -109,6 +109,11 @@ namespace CardsGame.Models
             PendulumClock = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, PendulumClockTicks, Application.Current.Dispatcher);
         }
 
+        /// <summary>
+        /// This function will countdown in every sec
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PendulumClockTicks(object sender, EventArgs e)
         {
             RemainedTime = RemainedTime.Add(TimeSpan.FromSeconds(-1));
@@ -119,6 +124,9 @@ namespace CardsGame.Models
             }
         }
 
+        /// <summary>
+        /// Game Over
+        /// </summary>
         private void GameOver()
         {
             PendulumClock.Stop();
