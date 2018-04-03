@@ -23,7 +23,7 @@
         <!-- Header -->
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label x:Name="LabelCountDown"  Content="Remain: 00:55" Padding="10" Margin="10" HorizontalAlignment="Left"/>
-            <Label x:Name="LabelPonits"     Content="Points: 100"   Padding="10" Margin="10" HorizontalAlignment="Left"/>
+            <Label x:Name="LabelPoints"     Content="Points: 100"   Padding="10" Margin="10" HorizontalAlignment="Left"/>
             <Label x:Name="LabelReaction"   Content="Reaction: 127" Padding="10" Margin="10" HorizontalAlignment="Left"/>
         </StackPanel>
 

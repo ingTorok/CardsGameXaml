@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CardsGame.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace CardsGame
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameSpace GameSpace;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            GameSpace = new GameSpace(this);
         }
     }
 }
