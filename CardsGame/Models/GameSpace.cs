@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
+using FontAwesome.WPF;
 
 namespace CardsGame.Models
 {
@@ -43,7 +46,15 @@ namespace CardsGame.Models
         /// </summary>
         private double GameTime = 5;
 
+        /// <summary>
+        /// Random for picking the cards to show
+        /// </summary>
         private Random RandomNumber = new Random();
+
+        /// <summary>
+        /// Variable to hold the Card before
+        /// </summary>
+        private FontAwesomeIcon CardBefore = FontAwesomeIcon.None;
 
         /// <summary>
         /// Constructor, on creation get the MainWindow
@@ -140,9 +151,84 @@ namespace CardsGame.Models
         /// </summary>
         private void ShowNewCard()
         {
+            CardBefore = MainWindow.CardPlaceRight.Icon;
             Random random = new Random();
             var number = random.Next(0, CardDeck.NrOfCardsInPlay);
             MainWindow.CardPlaceRight.Icon = CardDeck.Cards[number];
+        }
+
+        /// <summary>
+        /// Getting the Keydown event from the MainWindow
+        /// </summary>
+        /// <param name="key"></param>
+        public void KeyDown(Key key)
+        {
+            switch (key)
+            {
+                case Key.Left:
+                    NoAnswer();
+                    break;
+                case Key.Right:
+                    YesAnswer();
+                    break;
+                //case Key.Down:
+                //PartiallyAnswer;
+                    //break;
+                default:
+                    throw new Exception($"Not acceptable Key: {key}");
+            };
+        }
+
+        /// <summary>
+        /// Picking the YES Answer/Button
+        /// </summary>
+        private void YesAnswer()
+        {
+            if (CardBefore == MainWindow.CardPlaceRight.Icon)
+            {
+                TheAnswerIsGood();
+            }
+            else
+            {
+                TheAnswerIsBad();
+            }
+
+            ShowNewCard();
+        }
+
+        /// <summary>
+        /// Picking the NO Answer/Button
+        /// </summary>
+        private void NoAnswer()
+        {
+            if (CardBefore != MainWindow.CardPlaceRight.Icon)
+            {
+                TheAnswerIsGood();
+            }
+            else
+            {
+                TheAnswerIsBad();
+            }
+
+            ShowNewCard();
+        }
+
+        /// <summary>
+        /// This will evaluate if the Answer is GOOD
+        /// </summary>
+        private void TheAnswerIsGood()
+        {
+            MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Check;
+            MainWindow.CardPlaceLeft.Foreground = Brushes.Green;
+        }
+
+        /// <summary>
+        /// This will evaluate if the Answer is BAD
+        /// </summary>
+        private void TheAnswerIsBad()
+        {
+            MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Times;
+            MainWindow.CardPlaceLeft.Foreground = Brushes.Red;
         }
 
         /// <summary>

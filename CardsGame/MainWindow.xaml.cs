@@ -33,5 +33,20 @@ namespace CardsGame
         {
             GameSpace = new GameSpace(this);
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Left:
+                case Key.Right:
+                //case Key.Down:
+                    GameSpace.KeyDown(e.Key);
+                    e.Handled = true;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
