@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace CardsGame.Models
 {
@@ -32,6 +34,16 @@ namespace CardsGame.Models
         private int ReactionTime = 0;
 
         /// <summary>
+        /// Countdowner
+        /// </summary>
+        DispatcherTimer PendulumClock;
+
+        /// <summary>
+        /// Gametime. Set to 45 sec
+        /// </summary>
+        private double GameTime = 5;
+
+        /// <summary>
         /// Constructor, on creation get the MainWindow
         /// </summary>
         /// <param name="mainWindow">Window, which is showed on game progress</param>
@@ -39,9 +51,11 @@ namespace CardsGame.Models
         {
             this.MainWindow = mainWindow;
             SetNewGameCounters();
+            EnableButtons();
+            SetPendulumClock();
 
         }
-   
+
         /// <summary>
         /// CardDeck, here are stored the cards
         /// </summary>
@@ -52,7 +66,7 @@ namespace CardsGame.Models
         /// </summary>
         private void SetNewGameCounters()
         {
-            RemainedTime = TimeSpan.FromSeconds(45);
+            RemainedTime = TimeSpan.FromSeconds(GameTime);
             CardDeck = new CardDeck();
             ShowGameCounters();
         }
@@ -62,9 +76,53 @@ namespace CardsGame.Models
         /// </summary>
         private void ShowGameCounters()
         {
-            MainWindow.LabelCountDown.Content = $"Time remain: {RemainedTime.ToString("mm//:ss")}";
+            MainWindow.LabelCountDown.Content = $"Time remaining: {RemainedTime.ToString("mm\\:ss")}";
             MainWindow.LabelPoints.Content = $"Points {TotalPoints}";
             MainWindow.LabelReaction.Content = $"Reaction Time {ReactionTime}";
+        }
+
+        /// <summary>
+        /// Enable Yes/No/Partially Buttons
+        /// </summary>
+        private void EnableButtons()
+        {
+            MainWindow.ButtonNo.IsEnabled = true;
+            MainWindow.ButtonYes.IsEnabled = true;
+            MainWindow.ButtonPartially.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// Disable Yes/No/Partially Buttons
+        /// </summary>
+        private void DisableButtons()
+        {
+            MainWindow.ButtonNo.IsEnabled = false;
+            MainWindow.ButtonYes.IsEnabled = false;
+            MainWindow.ButtonPartially.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// Set the Time to 45 sec
+        /// </summary>
+        private void SetPendulumClock()
+        {
+            PendulumClock = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, PendulumClockTicks, Application.Current.Dispatcher);
+        }
+
+        private void PendulumClockTicks(object sender, EventArgs e)
+        {
+            RemainedTime = RemainedTime.Add(TimeSpan.FromSeconds(-1));
+            ShowGameCounters();
+            if (RemainedTime == TimeSpan.Zero)
+            {
+                GameOver();
+            }
+        }
+
+        private void GameOver()
+        {
+            PendulumClock.Stop();
+            DisableButtons();
         }
     }
 }

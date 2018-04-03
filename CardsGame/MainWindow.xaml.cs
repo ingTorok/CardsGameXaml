@@ -27,6 +27,10 @@ namespace CardsGame
         {
             InitializeComponent();
 
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
             GameSpace = new GameSpace(this);
         }
     }

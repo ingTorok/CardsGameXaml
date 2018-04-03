@@ -22,9 +22,9 @@
 
         <!-- Header -->
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Label x:Name="LabelCountDown"  Content="Remain: 00:55" Padding="10" Margin="10" HorizontalAlignment="Left"/>
-            <Label x:Name="LabelPoints"     Content="Points: 100"   Padding="10" Margin="10" HorizontalAlignment="Left"/>
-            <Label x:Name="LabelReaction"   Content="Reaction: 127" Padding="10" Margin="10" HorizontalAlignment="Left"/>
+            <Label x:Name="LabelCountDown"  Content="Time remaining: 00:00" Padding="10" Margin="10" HorizontalAlignment="Left"/>
+            <Label x:Name="LabelPoints"     Content="Points: 0"             Padding="10" Margin="10" HorizontalAlignment="Left"/>
+            <Label x:Name="LabelReaction"   Content="Reaction: 0"           Padding="10" Margin="10" HorizontalAlignment="Left"/>
         </StackPanel>
 
         <!-- Cards -->
@@ -41,10 +41,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="ButtonNo"        Grid.Row="0" Grid.Column="0" Content="No"         Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
-            <Button x:Name="ButtonPartially" Grid.Row="0" Grid.Column="1" Content="Partially"  Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
-            <Button x:Name="ButtonYes"       Grid.Row="0" Grid.Column="2" Content="Yes"        Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
-            <Button x:Name="ButtonStart"     Grid.Row="0" Grid.Column="3" Content="Start"      Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
+            <Button x:Name="ButtonNo"        Grid.Row="0" Grid.Column="0" IsEnabled="False" Content="No"         Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
+            <Button x:Name="ButtonPartially" Grid.Row="0" Grid.Column="1" IsEnabled="False" Content="Partially"  Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
+            <Button x:Name="ButtonYes"       Grid.Row="0" Grid.Column="2" IsEnabled="False" Content="Yes"        Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
+            <Button x:Name="ButtonStart"     Grid.Row="0" Grid.Column="3" IsEnabled="True" Content="Start"      Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="ButtonStart_Click"/>
             
         </Grid>
     </Grid>
