@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using System.Windows.Controls;
 using FontAwesome.WPF;
 
 namespace CardsGame.Models
@@ -27,6 +29,11 @@ namespace CardsGame.Models
         private TimeSpan RemainedTime;
 
         /// <summary>
+        /// Remainend time to start
+        /// </summary>
+        private TimeSpan StartTime;
+
+        /// <summary>
         /// Reached points
         /// </summary>
         private int TotalPoints = 0;
@@ -37,9 +44,14 @@ namespace CardsGame.Models
         private int ReactionTime = 0;
 
         /// <summary>
-        /// Countdowner
+        /// Countdowner for the game
         /// </summary>
-        DispatcherTimer PendulumClock;
+        private DispatcherTimer PendulumClock;
+
+        /// <summary>
+        /// Countdowner for start the game
+        /// </summary>
+        private DispatcherTimer CountDownClock;
 
         /// <summary>
         /// Gametime. Set to 45 sec
@@ -67,14 +79,36 @@ namespace CardsGame.Models
         /// <param name="mainWindow">Window, which is showed on game progress</param>
         public GameSpace(MainWindow mainWindow)
         {
-            IsGame = true;
             this.MainWindow = mainWindow;
-            SetNewGameCounters();
-            EnableButtons();
-            SetPendulumClock();
+            SetNewGameCounters();          
             CardDeck = new CardDeck();
+            EnableButtons();
             ShowNewCard();
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StartGame()
+        {
+            IsGame = true;
+            SetPendulumClock();
+            ShowNewCard();
+            MainWindow.LabelStartCountDown.Visibility = Visibility.Hidden;
+            MainWindow.ViewboxStartCountDown.Visibility = Visibility.Hidden;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void StartCountDown()
+        {
+            StartTime = TimeSpan.FromSeconds(3);
+            MainWindow.LabelStartCountDown.Visibility = Visibility.Visible;
+            MainWindow.ViewboxStartCountDown.Visibility = Visibility.Visible;
+            MainWindow.ButtonStart.IsEnabled = false;
+            SetCountDownClock();
         }
 
         /// <summary>
@@ -152,6 +186,34 @@ namespace CardsGame.Models
             }
         }
 
+        private void SetCountDownClock()
+        {
+            CountDownClock = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Send, CountDownClockTicks, Application.Current.Dispatcher);
+        }
+
+        private void CountDownClockTicks(object sender, EventArgs e)
+        {
+            MainWindow.TextBlockStartCountDown.Text = StartTime.ToString("ss");
+            MainWindow.ViewboxStartCountDown.Width = 50;
+            MainWindow.ViewboxStartCountDown.Height = 50;
+
+            var animationWidth = new DoubleAnimation(MainWindow.ViewboxStartCountDown.ActualWidth, 0, TimeSpan.FromMilliseconds(950));
+            MainWindow.ViewboxStartCountDown.BeginAnimation(MainWindow.WidthProperty, animationWidth);
+
+            var animationHight = new DoubleAnimation(MainWindow.ViewboxStartCountDown.ActualHeight, 0, TimeSpan.FromMilliseconds(950));
+            MainWindow.ViewboxStartCountDown.BeginAnimation(MainWindow.HeightProperty, animationHight);
+
+            StartTime = StartTime.Add(TimeSpan.FromSeconds(-1));
+
+
+            if (StartTime == TimeSpan.FromSeconds(-1))
+            {
+                CountDownClock.Stop();
+                StartGame();
+            }
+        }
+
+
         /// <summary>
         /// Picking up a new card
         /// </summary>
@@ -226,6 +288,7 @@ namespace CardsGame.Models
         {
             MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Check;
             MainWindow.CardPlaceLeft.Foreground = Brushes.Green;
+            HidingAnswer();
         }
 
         /// <summary>
@@ -235,6 +298,16 @@ namespace CardsGame.Models
         {
             MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Times;
             MainWindow.CardPlaceLeft.Foreground = Brushes.Red;
+            HidingAnswer();
+        }
+
+        /// <summary>
+        /// Effect for Hiding Icons
+        /// </summary>
+        private void HidingAnswer()
+        {
+            var animation = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(500));
+            MainWindow.CardPlaceLeft.BeginAnimation(UIElement.OpacityProperty, animation);
         }
 
         /// <summary>

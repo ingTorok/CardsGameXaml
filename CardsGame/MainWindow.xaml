@@ -28,9 +28,53 @@
         </StackPanel>
 
         <!-- Cards -->
-        <fa:ImageAwesome x:Name="CardPlaceLeft"  Grid.Row="1" Grid.Column="0" Icon="Check"      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-        <fa:ImageAwesome x:Name="CardPlaceRight" Grid.Row="1" Grid.Column="1" Icon="Adjust"     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <fa:ImageAwesome x:Name="CardPlaceLeft"  Grid.Row="1" Grid.Column="1" Icon="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="LabelStartCountDown" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
+            <Viewbox x:Name="ViewboxStartCountDown"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock x:Name="TextBlockStartCountDown">0</TextBlock>
+            </Viewbox>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="28*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="28*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" Grid.Column="1" Background="Azure">
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="23*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="23*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <fa:ImageAwesome x:Name="CardPlaceRight" Icon="None"  Grid.Row="1" Grid.Column="1"   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border.Effect>
+                    <DropShadowEffect/>
+                </Border.Effect>
+            </Border>
+        </Grid>
 
         <!-- Footer -->
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
@@ -44,7 +88,7 @@
             <Button x:Name="ButtonNo"        Grid.Row="0" Grid.Column="0" IsEnabled="False" Content="No"         Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="Button_Click"/>
             <Button x:Name="ButtonPartially" Grid.Row="0" Grid.Column="1" IsEnabled="False" Content="Partially"  Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="Button_Click"/>
             <Button x:Name="ButtonYes"       Grid.Row="0" Grid.Column="2" IsEnabled="False" Content="Yes"        Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="Button_Click"/>
-            <Button x:Name="ButtonStart"     Grid.Row="0" Grid.Column="3" IsEnabled="False" Content="Start"      Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Visibility="Hidden"/>
+            <Button x:Name="ButtonStart"     Grid.Row="0" Grid.Column="3" IsEnabled="False" Content="Start"      Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Visibility="Hidden" Click="ButtonStart_Click"/>
             <Button x:Name="ButtonNewGame"   Grid.Row="0" Grid.Column="3" IsEnabled="True" Content="New Game"    Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="ButtonNewGame_Click"/>
             
         </Grid>

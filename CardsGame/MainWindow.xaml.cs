@@ -57,20 +57,29 @@ namespace CardsGame
         {
             Button btn = (Button)sender;
 
-            switch (btn.Name.ToString())
+            if (GameSpace.IsGame)
             {
-                case "ButtonNo":
-                    GameSpace.KeyDown(Key.Left);
-                    break;
-                //case "ButtonPartially":
-                //    break;
-                case "ButtonYes":
-                    GameSpace.KeyDown(Key.Right);
-                    break;
-                
-                default:
-                    break;
+                switch (btn.Name.ToString())
+                {
+                    case "ButtonNo":
+                        GameSpace.KeyDown(Key.Left);
+                        break;
+                    //case "ButtonPartially":
+                    //    break;
+                    case "ButtonYes":
+                        GameSpace.KeyDown(Key.Right);
+                        break;
+
+                    default:
+                        break;
+                }
             }
+            
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            GameSpace.StartCountDown();
         }
     }
 }
