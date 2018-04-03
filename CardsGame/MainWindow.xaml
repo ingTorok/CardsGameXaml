@@ -44,7 +44,8 @@
             <Button x:Name="ButtonNo"        Grid.Row="0" Grid.Column="0" IsEnabled="False" Content="No"         Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
             <Button x:Name="ButtonPartially" Grid.Row="0" Grid.Column="1" IsEnabled="False" Content="Partially"  Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
             <Button x:Name="ButtonYes"       Grid.Row="0" Grid.Column="2" IsEnabled="False" Content="Yes"        Padding="10" Margin="10" MaxHeight="60" MaxWidth="120"/>
-            <Button x:Name="ButtonStart"     Grid.Row="0" Grid.Column="3" IsEnabled="True" Content="Start"      Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="ButtonStart_Click"/>
+            <Button x:Name="ButtonStart"     Grid.Row="0" Grid.Column="3" IsEnabled="False" Content="Start"      Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Visibility="Hidden"/>
+            <Button x:Name="ButtonNewGame"   Grid.Row="0" Grid.Column="3" IsEnabled="True" Content="New Game"    Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="ButtonNewGame_Click"/>
             
         </Grid>
     </Grid>

@@ -29,7 +29,7 @@ namespace CardsGame
 
         }
 
-        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        private void ButtonNewGame_Click(object sender, RoutedEventArgs e)
         {
             GameSpace = new GameSpace(this);
         }

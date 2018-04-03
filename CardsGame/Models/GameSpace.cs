@@ -43,6 +43,8 @@ namespace CardsGame.Models
         /// </summary>
         private double GameTime = 5;
 
+        private Random RandomNumber = new Random();
+
         /// <summary>
         /// Constructor, on creation get the MainWindow
         /// </summary>
@@ -54,6 +56,7 @@ namespace CardsGame.Models
             EnableButtons();
             SetPendulumClock();
             CardDeck = new CardDeck();
+            ShowNewCard();
 
         }
 
@@ -86,6 +89,10 @@ namespace CardsGame.Models
         /// </summary>
         private void EnableButtons()
         {
+            MainWindow.ButtonNewGame.IsEnabled = false;
+            MainWindow.ButtonNewGame.Visibility = Visibility.Hidden;
+            MainWindow.ButtonStart.Visibility = Visibility.Visible;
+            MainWindow.ButtonStart.IsEnabled = true;
             MainWindow.ButtonNo.IsEnabled = true;
             MainWindow.ButtonYes.IsEnabled = true;
             MainWindow.ButtonPartially.IsEnabled = true;
@@ -96,6 +103,10 @@ namespace CardsGame.Models
         /// </summary>
         private void DisableButtons()
         {
+            MainWindow.ButtonStart.IsEnabled = false;
+            MainWindow.ButtonStart.Visibility = Visibility.Hidden;
+            MainWindow.ButtonNewGame.Visibility = Visibility.Visible;
+            MainWindow.ButtonNewGame.IsEnabled = true;
             MainWindow.ButtonNo.IsEnabled = false;
             MainWindow.ButtonYes.IsEnabled = false;
             MainWindow.ButtonPartially.IsEnabled = false;
@@ -122,6 +133,16 @@ namespace CardsGame.Models
             {
                 GameOver();
             }
+        }
+
+        /// <summary>
+        /// Picking up a new card
+        /// </summary>
+        private void ShowNewCard()
+        {
+            Random random = new Random();
+            var number = random.Next(0, CardDeck.NrOfCardsInPlay);
+            MainWindow.CardPlaceRight.Icon = CardDeck.Cards[number];
         }
 
         /// <summary>
