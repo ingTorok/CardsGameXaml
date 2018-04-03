@@ -36,14 +36,38 @@ namespace CardsGame
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
+            if (GameSpace.IsGame)
             {
-                case Key.Left:
-                case Key.Right:
-                //case Key.Down:
-                    GameSpace.KeyDown(e.Key);
-                    e.Handled = true;
+                switch (e.Key)
+                {
+                    case Key.Left:
+                    case Key.Right:
+                        //case Key.Down:
+                        GameSpace.KeyDown(e.Key);
+                        e.Handled = true;
+                        break;
+                    default:
+                        break;
+                }
+            
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            switch (btn.Name.ToString())
+            {
+                case "ButtonNo":
+                    GameSpace.KeyDown(Key.Left);
                     break;
+                //case "ButtonPartially":
+                //    break;
+                case "ButtonYes":
+                    GameSpace.KeyDown(Key.Right);
+                    break;
+                
                 default:
                     break;
             }

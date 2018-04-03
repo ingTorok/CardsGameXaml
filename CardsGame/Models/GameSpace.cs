@@ -57,11 +57,17 @@ namespace CardsGame.Models
         private FontAwesomeIcon CardBefore = FontAwesomeIcon.None;
 
         /// <summary>
+        /// Show if the game is Running or not
+        /// </summary>
+        public bool IsGame = false;
+
+        /// <summary>
         /// Constructor, on creation get the MainWindow
         /// </summary>
         /// <param name="mainWindow">Window, which is showed on game progress</param>
         public GameSpace(MainWindow mainWindow)
         {
+            IsGame = true;
             this.MainWindow = mainWindow;
             SetNewGameCounters();
             EnableButtons();
@@ -106,7 +112,7 @@ namespace CardsGame.Models
             MainWindow.ButtonStart.IsEnabled = true;
             MainWindow.ButtonNo.IsEnabled = true;
             MainWindow.ButtonYes.IsEnabled = true;
-            MainWindow.ButtonPartially.IsEnabled = true;
+            //MainWindow.ButtonPartially.IsEnabled = true;
         }
 
         /// <summary>
@@ -120,7 +126,7 @@ namespace CardsGame.Models
             MainWindow.ButtonNewGame.IsEnabled = true;
             MainWindow.ButtonNo.IsEnabled = false;
             MainWindow.ButtonYes.IsEnabled = false;
-            MainWindow.ButtonPartially.IsEnabled = false;
+            //MainWindow.ButtonPartially.IsEnabled = false;
         }
 
         /// <summary>
@@ -238,6 +244,7 @@ namespace CardsGame.Models
         {
             PendulumClock.Stop();
             DisableButtons();
+            IsGame = false;
         }
     }
 }
