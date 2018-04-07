@@ -84,7 +84,6 @@ namespace CardsGame.Models
             CardDeck = new CardDeck();
             EnableButtons();
             ShowNewCard();
-
         }
 
         /// <summary>
@@ -95,7 +94,6 @@ namespace CardsGame.Models
             IsGame = true;
             SetPendulumClock();
             ShowNewCard();
-            MainWindow.LabelStartCountDown.Visibility = Visibility.Hidden;
             MainWindow.ViewboxStartCountDown.Visibility = Visibility.Hidden;
         }
 
@@ -105,7 +103,6 @@ namespace CardsGame.Models
         public void StartCountDown()
         {
             StartTime = TimeSpan.FromSeconds(3);
-            MainWindow.LabelStartCountDown.Visibility = Visibility.Visible;
             MainWindow.ViewboxStartCountDown.Visibility = Visibility.Visible;
             MainWindow.ButtonStart.IsEnabled = false;
             SetCountDownClock();
@@ -130,7 +127,7 @@ namespace CardsGame.Models
         /// </summary>
         private void ShowGameCounters()
         {
-            MainWindow.LabelCountDown.Content = $"Time remaining: {RemainedTime.ToString("mm\\:ss")}";
+            MainWindow.LabelCountDown.Content = $"Time remaining: {RemainedTime.ToString("ss")}";
             MainWindow.LabelPoints.Content = $"Points {TotalPoints}";
             MainWindow.LabelReaction.Content = $"Reaction Time {ReactionTime}";
         }
@@ -191,25 +188,27 @@ namespace CardsGame.Models
             CountDownClock = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Send, CountDownClockTicks, Application.Current.Dispatcher);
         }
 
+        /// <summary>
+        /// Write on the Mainwindow the actually remained time to start.
+        /// </summary>
         private void CountDownClockTicks(object sender, EventArgs e)
         {
-            MainWindow.TextBlockStartCountDown.Text = StartTime.ToString("ss");
-            MainWindow.ViewboxStartCountDown.Width = 50;
-            MainWindow.ViewboxStartCountDown.Height = 50;
+            //Transfotm the time in seconds and give back the last charachter (time to strat = 3, always <9)
+            string timeUntylStart = StartTime.ToString("ss").Substring(StartTime.ToString("ss").Length - 1);
 
-            var animationWidth = new DoubleAnimation(MainWindow.ViewboxStartCountDown.ActualWidth, 0, TimeSpan.FromMilliseconds(950));
-            MainWindow.ViewboxStartCountDown.BeginAnimation(MainWindow.WidthProperty, animationWidth);
+            //Write the actually tiem untyl start in the TextBlock
+            MainWindow.TextBlockStartCountDown.Text = timeUntylStart;
 
-            var animationHight = new DoubleAnimation(MainWindow.ViewboxStartCountDown.ActualHeight, 0, TimeSpan.FromMilliseconds(950));
-            MainWindow.ViewboxStartCountDown.BeginAnimation(MainWindow.HeightProperty, animationHight);
-
-            StartTime = StartTime.Add(TimeSpan.FromSeconds(-1));
-
-
-            if (StartTime == TimeSpan.FromSeconds(-1))
-            {
+            if (StartTime <= TimeSpan.FromSeconds(0))
+            {//If the time untyl start is 0 then stop countdown and start the game
                 CountDownClock.Stop();
                 StartGame();
+            }
+            else
+            {//Animation to micrify the Viewbox. It's use the Grid's Height - this property is responsive,
+                var animationHight = new DoubleAnimation(MainWindow.GridStartCountDown.ActualHeight, 0, TimeSpan.FromMilliseconds(850));
+                MainWindow.ViewboxStartCountDown.BeginAnimation(Viewbox.HeightProperty, animationHight);
+                StartTime = StartTime.Add(TimeSpan.FromSeconds(-1));
             }
         }
 
