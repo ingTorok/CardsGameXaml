@@ -221,8 +221,23 @@ namespace CardsGame.Models
             CardBefore = MainWindow.CardPlaceRight.Icon;
             Random random = new Random();
             var number = random.Next(0, CardDeck.NrOfCardsInPlay);
+            TurnDownCard();
             MainWindow.CardPlaceRight.Icon = CardDeck.Cards[number];
         }
+
+        private void TurnDownCard()
+        {
+            var animationDown = new DoubleAnimation(1, 0.15, TimeSpan.FromMilliseconds(65));           
+            animationDown.Completed += TurnUpCard;
+            MainWindow.imageScale.BeginAnimation(ScaleTransform.ScaleXProperty, animationDown);
+
+        }
+
+        private void TurnUpCard(object sender, EventArgs e)
+        {
+            var animationUp = new DoubleAnimation(0.15, 1, TimeSpan.FromMilliseconds(65));
+            MainWindow.imageScale.BeginAnimation(ScaleTransform.ScaleXProperty, animationUp);
+        }   
 
         /// <summary>
         /// Getting the Keydown event from the MainWindow

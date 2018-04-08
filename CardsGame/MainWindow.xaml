@@ -67,7 +67,11 @@
                         <ColumnDefinition Width="23*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <fa:ImageAwesome x:Name="CardPlaceRight" Icon="None"  Grid.Row="1" Grid.Column="1"   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <fa:ImageAwesome x:Name="CardPlaceRight" Icon="None"  Grid.Row="1" Grid.Column="1"   HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <fa:ImageAwesome.RenderTransform>
+                            <ScaleTransform x:Name="imageScale"/>
+                        </fa:ImageAwesome.RenderTransform>
+                    </fa:ImageAwesome>
                 </Grid>
                 <Border.Effect>
                     <DropShadowEffect/>
