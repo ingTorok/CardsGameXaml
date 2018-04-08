@@ -34,21 +34,6 @@ namespace CardsGame.Models
         private TimeSpan StartTime;
 
         /// <summary>
-        /// Reached points
-        /// </summary>
-        private int TotalPoints = 0;
-
-        /// <summary>
-        /// Show the Reaction Time
-        /// </summary>
-        private string Streak="       ";
-
-        /// <summary>
-        /// Variable to count Points
-        /// </summary>
-        private int StreakMultiplier = 0;
-
-        /// <summary>
         /// Countdowner for the game
         /// </summary>
         private DispatcherTimer PendulumClock;
@@ -72,6 +57,11 @@ namespace CardsGame.Models
         /// Variable to hold the Card before
         /// </summary>
         private FontAwesomeIcon CardBefore = FontAwesomeIcon.None;
+
+        /// <summary>
+        /// Class to hold the Gamecounters
+        /// </summary>
+        private GameCounters GameCounters = new GameCounters();
 
         /// <summary>
         /// Show if the game is Running or not
@@ -133,8 +123,10 @@ namespace CardsGame.Models
         private void ShowGameCounters()
         {
             MainWindow.LabelCountDown.Content = $"Time remaining: {RemainedTime.ToString("ss")}";
-            MainWindow.LabelPoints.Content = $"Points: {TotalPoints}";
-            MainWindow.LabelStreak.Content = $"Streak: {Streak.Substring(Streak.Length-7)}";
+            MainWindow.LabelPoints.Content = $"Points: {GameCounters.TotalPoints}";
+
+            var streak = GameCounters.Streak;
+            MainWindow.LabelStreak.Content = $"Streak: {streak.Substring(streak.Length-7)}";
         }
 
         /// <summary>
@@ -174,7 +166,7 @@ namespace CardsGame.Models
         }
 
         /// <summary>
-        /// This function will countdown in every sec
+        /// This function will countdown 1 in every sec
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -308,8 +300,8 @@ namespace CardsGame.Models
             MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Check;
             MainWindow.CardPlaceLeft.Foreground = Brushes.Green;
             HidingAnswer();
-            CountStreak(true);
-            CountPoints();
+            GameCounters.CountStreak(true);
+            GameCounters.CountPoints();
             ShowGameCounters();
         }
 
@@ -321,8 +313,8 @@ namespace CardsGame.Models
             MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Times;
             MainWindow.CardPlaceLeft.Foreground = Brushes.Red;
             HidingAnswer();
-            CountStreak(false);
-            CountPoints();
+            GameCounters.CountStreak(false);
+            GameCounters.CountPoints();
             ShowGameCounters();
         }
 
@@ -333,56 +325,6 @@ namespace CardsGame.Models
         {
             var animation = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(500));
             MainWindow.CardPlaceLeft.BeginAnimation(UIElement.OpacityProperty, animation);
-        }
-
-        /// <summary>
-        /// Counting the Streak for good and bad answers
-        /// </summary>
-        /// <param name="v"></param>
-        private void CountStreak(bool v)
-        {
-            if (v)
-            {
-                Streak += "1";
-
-                if (StreakMultiplier <= 0)
-                {
-                    StreakMultiplier = 0;
-                }
-
-                StreakMultiplier++;
-            }
-            else
-            {
-                Streak += "0";
-
-                if (StreakMultiplier >= 0)
-                {
-                    StreakMultiplier = 0;
-                }
-               
-                StreakMultiplier --;
-            }
-
-        }
-
-        /// <summary>
-        /// Method to count Points
-        /// </summary>
-        private void CountPoints()
-        {
-            if (StreakMultiplier < -3)
-            {
-                TotalPoints += -30;
-            }
-            else if (StreakMultiplier > 7)
-            {
-                TotalPoints += 70;
-            }
-            else
-            {
-                TotalPoints += StreakMultiplier * 10;
-            }
         }
 
         /// <summary>

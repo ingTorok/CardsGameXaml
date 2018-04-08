@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Models\CardDeck.cs" />
     <Compile Include="Models\GameSpace.cs" />
+    <Compile Include="Models\GameCounters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
