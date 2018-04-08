@@ -217,9 +217,34 @@ namespace CardsGame.Models
         {
             CardBefore = MainWindow.CardPlaceRight.Icon;
             Random random = new Random();
-            var number = random.Next(0, CardDeck.NrOfCardsInPlay);
+            var number = random.Next(0,2);
             TurnDownCard();
-            MainWindow.CardPlaceRight.Icon = CardDeck.Cards[number];
+
+            //50% chance to pick old Card (number=0), 50% to pick a new Card (number=1)
+            if (number <= 0 & CardBefore != FontAwesomeIcon.None)
+            {//will pick the OLD Card
+                MainWindow.CardPlaceRight.Icon = CardBefore;
+            }
+            else
+            {//will pick a NEW Card
+                bool isOldCard = true;
+                while (isOldCard)
+                {//Check if the picked new card is the old card, when yes then will pick a new one
+                    //number will pick a Card from the Deck from 0 to 4, 4 is exclusive
+                    number = random.Next(0, CardDeck.NrOfCardsInPlay);
+                    if (MainWindow.CardPlaceRight.Icon == CardDeck.Cards[number])
+                    {//the new Card is the Old ard
+                        isOldCard = true;
+                    }
+                    else
+                    {//the New card is different from the Old card
+                        isOldCard = false;
+                        MainWindow.CardPlaceRight.Icon = CardDeck.Cards[number];
+                    }
+                    
+                }              
+            }
+            
         }
 
         private void TurnDownCard()
