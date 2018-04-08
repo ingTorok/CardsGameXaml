@@ -41,7 +41,12 @@ namespace CardsGame.Models
         /// <summary>
         /// Show the Reaction Time
         /// </summary>
-        private int ReactionTime = 0;
+        private string Streak="       ";
+
+        /// <summary>
+        /// Variable to count Points
+        /// </summary>
+        private int StreakMultiplier = 0;
 
         /// <summary>
         /// Countdowner for the game
@@ -56,7 +61,7 @@ namespace CardsGame.Models
         /// <summary>
         /// Gametime. Set to 45 sec
         /// </summary>
-        private double GameTime = 5;
+        private double GameTime = 45;
 
         /// <summary>
         /// Random for picking the cards to show
@@ -128,8 +133,8 @@ namespace CardsGame.Models
         private void ShowGameCounters()
         {
             MainWindow.LabelCountDown.Content = $"Time remaining: {RemainedTime.ToString("ss")}";
-            MainWindow.LabelPoints.Content = $"Points {TotalPoints}";
-            MainWindow.LabelReaction.Content = $"Reaction Time {ReactionTime}";
+            MainWindow.LabelPoints.Content = $"Points: {TotalPoints}";
+            MainWindow.LabelStreak.Content = $"Streak: {Streak.Substring(Streak.Length-7)}";
         }
 
         /// <summary>
@@ -176,11 +181,11 @@ namespace CardsGame.Models
         private void PendulumClockTicks(object sender, EventArgs e)
         {
             RemainedTime = RemainedTime.Add(TimeSpan.FromSeconds(-1));
-            ShowGameCounters();
             if (RemainedTime == TimeSpan.Zero)
             {
                 GameOver();
             }
+            ShowGameCounters();
         }
 
         private void SetCountDownClock()
@@ -303,6 +308,9 @@ namespace CardsGame.Models
             MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Check;
             MainWindow.CardPlaceLeft.Foreground = Brushes.Green;
             HidingAnswer();
+            CountStreak(true);
+            CountPoints();
+            ShowGameCounters();
         }
 
         /// <summary>
@@ -313,6 +321,9 @@ namespace CardsGame.Models
             MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Times;
             MainWindow.CardPlaceLeft.Foreground = Brushes.Red;
             HidingAnswer();
+            CountStreak(false);
+            CountPoints();
+            ShowGameCounters();
         }
 
         /// <summary>
@@ -322,6 +333,56 @@ namespace CardsGame.Models
         {
             var animation = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(500));
             MainWindow.CardPlaceLeft.BeginAnimation(UIElement.OpacityProperty, animation);
+        }
+
+        /// <summary>
+        /// Counting the Streak for good and bad answers
+        /// </summary>
+        /// <param name="v"></param>
+        private void CountStreak(bool v)
+        {
+            if (v)
+            {
+                Streak += "1";
+
+                if (StreakMultiplier <= 0)
+                {
+                    StreakMultiplier = 0;
+                }
+
+                StreakMultiplier++;
+            }
+            else
+            {
+                Streak += "0";
+
+                if (StreakMultiplier >= 0)
+                {
+                    StreakMultiplier = 0;
+                }
+               
+                StreakMultiplier --;
+            }
+
+        }
+
+        /// <summary>
+        /// Method to count Points
+        /// </summary>
+        private void CountPoints()
+        {
+            if (StreakMultiplier < -3)
+            {
+                TotalPoints += -30;
+            }
+            else if (StreakMultiplier > 7)
+            {
+                TotalPoints += 70;
+            }
+            else
+            {
+                TotalPoints += StreakMultiplier * 10;
+            }
         }
 
         /// <summary>
