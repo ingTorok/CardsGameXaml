@@ -1,4 +1,5 @@
 ﻿using CardsGame.Models;
+using CardsGame.WPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,13 @@ namespace CardsGame
     public partial class MainWindow : Window
     {
         GameSpace GameSpace;
+        TopScoreWindow TopScoreWindow;
 
         public MainWindow()
         {
             InitializeComponent();
+            TopScoreWindow = new TopScoreWindow();
+            TopScoreWindow.Show();
 
         }
 
