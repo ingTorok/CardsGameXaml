@@ -24,30 +24,29 @@ namespace CardsGame.WPF
     public partial class HighScoreWindow : Window
     {
         /// <summary>
-        /// 
+        /// local Variable we will store GameCounters from GameSpace (MainWindow)
         /// </summary>
         GameCounters GameCounters;
 
         /// <summary>
-        /// 
+        /// local Variable to get and store Score from GameCounters
         /// </summary>
         Score Score = new Score();
 
         /// <summary>
-        /// 
+        /// in this List we read from file and store the HighScores
         /// </summary>
         List<Score> HighScoreList;
 
         /// <summary>
-        /// 
+        /// The name of the txt. File where the HighScore are stored
         /// </summary>
         string FileName = "HighScore.txt";
 
         /// <summary>
-        /// 
+        /// The constructer for HighScoreWindow
         /// </summary>
-        /// <param name="gameCounters"></param>
-
+        /// <param name="gameCounters">In this variable we will get GameCounters from GameSpace (MainWindow)</param>
         public HighScoreWindow(GameCounters gameCounters)
         {
             HighScoreList = new List<Score>();
@@ -56,12 +55,13 @@ namespace CardsGame.WPF
             LoadGameScore();
             LoadScore();
             WriteGameScore();
+            ButtonAddScore.IsEnabled = true;
             Show();
 
         }
 
         /// <summary>
-        /// 
+        /// Here we will get the Scoredetails from GameCounters to hold in Score
         /// </summary>
         private void LoadGameScore()
         {
@@ -82,30 +82,37 @@ namespace CardsGame.WPF
             TextBlockBestReaction.Text = Score.BestReaction;
         }
         /// <summary>
-        /// 
+        /// This function will open the file to load existing/saved score
         /// </summary>
         private void LoadScore()
         {
-            Score oldScore = new Score();
+            //The HighScore List will be reacreated
             HighScoreList = new List<Score>();
         
             if (File.Exists(FileName))
-            {
+            {//we will chcek if the filename exists (firstplay?)
                 List<string> stringList;
                 var fs = new FileStream(FileName, FileMode.Open);
                 var xmlSerializer = new XmlSerializer(typeof(List<string>));
                 stringList = (List<string>)xmlSerializer.Deserialize(fs);
 
                 foreach (string item in stringList)
-                {
-                    string[] stringScore = item.Split(';');
+                {//in every Line of the txt. File are saved the details for the Score, separated with ";"
+                 //we will split the strings
+                 //the spilted Strings are stored in oldScore
+                 
+                    //in this variable we will hold temporary the Scores readed from the txt. File
+                    Score oldScore = new Score();
 
+                    string[] stringScore;
+                    stringScore = item.Split(';');
                     oldScore.Name = stringScore[0];
                     oldScore.TotalPoints = stringScore[1];
                     oldScore.BestStreak = stringScore[2];
                     oldScore.BestReaction = stringScore[3];
                     oldScore.GameDate = stringScore[4];
 
+                    //finally we will the readed Scores to the HighScoreList
                     HighScoreList.Add(oldScore);
                 }
 
@@ -117,16 +124,52 @@ namespace CardsGame.WPF
             
         }
 
-        private void ShowScore()
-        {4
+        /// <summary>
+        /// This function will be executed at clicking on "Add" Button on HighScoreWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonAddScore_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewScore();
+            ShowScore();
+        }
 
+        /// <summary>
+        /// This function will actualise the Listboxes in HighScoreWindow
+        /// </summary>
+        private void ShowScore()
+        {
+            if (ListBoxScore.Items.Count <1 //if the HighScoreWindow ist first Opened 
+                && HighScoreList.Count > 0) // and the HigSchoreList contains items
+            {                               // then we will add to the corresponding Listbox the details of the Score readed from the txt. File
+                WriteScoresToListboxes();
+            }
+            else
+            {//othwerwise we will remove all files from the Listboxes and then we fill fill up again with the new Score
+                ListBoxName.Items.Clear();
+                ListBoxScore.Items.Clear();
+                ListBoxBestSreak.Items.Clear();
+                ListBoxBestReaction.Items.Clear();
+                ListBoxDate.Items.Clear();
+
+                WriteScoresToListboxes();
+            }
+            
+        }
+
+        /// <summary>
+        /// This function will add the Scoredetails to the corresponding Listbox on HighScoreWindow
+        /// </summary>
+        private void WriteScoresToListboxes()
+        {
             foreach (Score item in HighScoreList)
             {
-                ListBoxName.Items.Add(Score.Name);
-                ListBoxScore.Items.Add(Score.TotalPoints);
-                ListBoxBestSreak.Items.Add(Score.BestStreak);
-                ListBoxBestReaction.Items.Add(Score.BestReaction);
-                ListBoxDate.Items.Add(Score.GameDate);
+                ListBoxName.Items.Add(item.Name);
+                ListBoxScore.Items.Add(item.TotalPoints);
+                ListBoxBestSreak.Items.Add(item.BestStreak);
+                ListBoxBestReaction.Items.Add(item.BestReaction);
+                ListBoxDate.Items.Add(item.GameDate);
             }
         }
 
@@ -145,26 +188,40 @@ namespace CardsGame.WPF
             {
                 Score.Name = TextBoxName.Text;
             }
-         
-            List<string> stringList = new List<string>();
+
+            //the New Score is added
             HighScoreList.Add(Score);
+
+            //the new ScoreList is sorted
+            HighScoreList = HighScoreList.OrderBy(x => x.TotalPoints).ToList();
+
+            //if the List contains more then 10 elements we will delete (we store only the top10)
+            while (HighScoreList.Count > 10)
+            {
+                HighScoreList.RemoveAt(HighScoreList.Count - 1);
+            }
+ 
+            //the Scoredetails in the neHighScoreList we will convert to strings, separated with ";" and added to List stringList
+            List<string> stringList = new List<string>();
 
             foreach (Score item in HighScoreList)
             {
                 stringList.Add(item.Name + ";" + item.TotalPoints+ ";" + item.BestStreak + ";"+ item.BestReaction + ";"+ item.GameDate);
             }
+
+            //here we write to file the newScores
             var fs = new FileStream(FileName, FileMode.Create);
             var xmlSerializer = new XmlSerializer(typeof(List<string>));
             xmlSerializer.Serialize(fs, stringList);
-            Debug.WriteLine(HighScoreList.Count);
+            //Debug.WriteLine(HighScoreList.Count);
             fs.Close();
 
+            //we will Block the "Add" Button
+            ButtonAddScore.IsEnabled = false;
+
+            ShowScore();
+
         }
 
-        private void ButtonAddScore_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewScore();
-            ShowScore();
-        }
     }
 }
