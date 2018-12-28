@@ -70,6 +70,11 @@ namespace CardsGame.Models
         public bool IsGame = false;
 
         /// <summary>
+        /// Show if is countdown or not
+        /// </summary>
+        public bool isCountdown = false;
+
+        /// <summary>
         /// Top Scores
         /// </summary>
         HighScoreWindow TopScores;
@@ -93,6 +98,7 @@ namespace CardsGame.Models
         private void StartGame()
         {
             IsGame = true;
+            isCountdown = false;
             SetPendulumClock();
             ShowNewCard();
             MainWindow.ViewboxStartCountDown.Visibility = Visibility.Hidden;
@@ -136,7 +142,7 @@ namespace CardsGame.Models
         }
 
         /// <summary>
-        /// Enable Yes/No/Partially Buttons
+        /// Enable Yes/No/Partially Buttons and set the visibility for Start(true) and New Game(false) buttons
         /// </summary>
         private void EnableButtons()
         {
@@ -150,7 +156,7 @@ namespace CardsGame.Models
         }
 
         /// <summary>
-        /// Disable Yes/No/Partially Buttons
+        /// Disable Yes/No/Partially Buttons and set the visibility for Start(false) and New Game(true) buttons
         /// </summary>
         private void DisableButtons()
         {
@@ -199,11 +205,11 @@ namespace CardsGame.Models
             //Transfotm the time in seconds and give back the last charachter (time to strat = 3, always <9)
             string timeUntylStart = StartTime.ToString("ss").Substring(StartTime.ToString("ss").Length - 1);
 
-            //Write the actually tiem untyl start in the TextBlock
+            //Write the actually tiem until start in the TextBlock
             MainWindow.TextBlockStartCountDown.Text = timeUntylStart;
 
             if (StartTime <= TimeSpan.FromSeconds(0))
-            {//If the time untyl start is 0 then stop countdown and start the game
+            {//If the time until start is 0 then stop countdown and start the game
                 CountDownClock.Stop();
                 StartGame();
             }

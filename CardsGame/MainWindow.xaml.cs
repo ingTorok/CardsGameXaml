@@ -22,7 +22,7 @@ namespace CardsGame
     /// </summary>
     public partial class MainWindow : Window
     {
-        GameSpace GameSpace; 
+        GameSpace GameSpace;
 
         public MainWindow()
         {
@@ -34,15 +34,21 @@ namespace CardsGame
         /// </summary>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (ButtonNewGame.IsVisible == true & e.Key == Key.Up)
+
+            if (ButtonNewGame.IsVisible == true && e.Key == Key.Up)
             {
                 GameSpace = new GameSpace(this);
                 return;
             }
-            else
-
-            if (!GameSpace.IsGame & ButtonStart.IsVisible == true & e.Key == Key.Up)
+            
+            else if (GameSpace == null)
             {
+                return;
+            }
+
+            else if (!GameSpace.isCountdown && !GameSpace.IsGame && ButtonStart.IsVisible == true && e.Key == Key.Up)
+            {
+                GameSpace.isCountdown = true;
                 GameSpace.StartCountDown();
                 return;
             }

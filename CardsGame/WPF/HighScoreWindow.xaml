@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="High Score" Height="450" Width="800"
         MaxHeight="450" MaxWidth="800"
-        MinHeight="225" MinWidth="400">
+        MinHeight="225" MinWidth="400" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -267,6 +267,16 @@
                 <StackPanel Orientation="Horizontal">
                     <fa:FontAwesome Icon="ArrowUp" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                     <Label Content="Add Score" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+
+        </Button>
+
+        <Button x:Name="ButtonExit" Grid.Column="5" Grid.Row="2" Margin="2" Click="ButtonExit_Click" Visibility="Hidden" IsEnabled="False">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <fa:FontAwesome Icon="ArrowUp" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <Label Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button.Content>
 

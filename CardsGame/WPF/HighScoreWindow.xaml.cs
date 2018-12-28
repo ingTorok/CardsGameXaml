@@ -55,7 +55,12 @@ namespace CardsGame.WPF
             LoadGameScore();
             LoadScore();
             WriteGameScore();
+
             ButtonAddScore.IsEnabled = true;
+            ButtonAddScore.Visibility = Visibility.Visible;
+            ButtonExit.IsEnabled = false;
+            ButtonExit.Visibility = Visibility.Hidden;
+
             Show();
 
         }
@@ -65,9 +70,9 @@ namespace CardsGame.WPF
         /// </summary>
         private void LoadGameScore()
         {
-            Score.TotalPoints = GameCounters.TotalPoints.ToString();
+            Score.TotalPoints = GameCounters.TotalPoints;
             Score.BestStreak = GameCounters.BestStreak.ToString();
-            Score.GameDate = DateTime.Now.ToString("dd/mm/yyyy");
+            Score.GameDate = DateTime.Now.ToString("dd/MM/yyyy");
             Score.BestReaction = "100";
         }
 
@@ -76,7 +81,7 @@ namespace CardsGame.WPF
         /// </summary>
         private void WriteGameScore()
         {
-            TextBlockScore.Text = Score.TotalPoints;
+            TextBlockScore.Text = Score.TotalPoints.ToString();
             TextBlockBestStreak.Text = Score.BestStreak;
             TextBlockDate.Text = Score.GameDate;
             TextBlockBestReaction.Text = Score.BestReaction;
@@ -104,10 +109,11 @@ namespace CardsGame.WPF
                     //in this variable we will hold temporary the Scores readed from the txt. File
                     Score oldScore = new Score();
 
+                    //todo: handel parse!
                     string[] stringScore;
                     stringScore = item.Split(';');
                     oldScore.Name = stringScore[0];
-                    oldScore.TotalPoints = stringScore[1];
+                    oldScore.TotalPoints = long.Parse(stringScore[1]);
                     oldScore.BestStreak = stringScore[2];
                     oldScore.BestReaction = stringScore[3];
                     oldScore.GameDate = stringScore[4];
@@ -122,17 +128,6 @@ namespace CardsGame.WPF
             }
 
             
-        }
-
-        /// <summary>
-        /// This function will be executed at clicking on "Add" Button on HighScoreWindow
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonAddScore_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewScore();
-            ShowScore();
         }
 
         /// <summary>
@@ -193,10 +188,10 @@ namespace CardsGame.WPF
             HighScoreList.Add(Score);
 
             //the new ScoreList is sorted
-            HighScoreList = HighScoreList.OrderBy(x => x.TotalPoints).ToList();
+            HighScoreList = HighScoreList.OrderByDescending(x => x.TotalPoints).ToList();
 
-            //if the List contains more then 10 elements we will delete (we store only the top10)
-            while (HighScoreList.Count > 10)
+            //if the List contains more then 15 elements we will delete (we store only the top15)
+            while (HighScoreList.Count > 15)
             {
                 HighScoreList.RemoveAt(HighScoreList.Count - 1);
             }
@@ -206,7 +201,7 @@ namespace CardsGame.WPF
 
             foreach (Score item in HighScoreList)
             {
-                stringList.Add(item.Name + ";" + item.TotalPoints+ ";" + item.BestStreak + ";"+ item.BestReaction + ";"+ item.GameDate);
+                stringList.Add(item.Name + ";" + item.TotalPoints.ToString() + ";" + item.BestStreak + ";"+ item.BestReaction + ";"+ item.GameDate);
             }
 
             //here we write to file the newScores
@@ -216,12 +211,54 @@ namespace CardsGame.WPF
             //Debug.WriteLine(HighScoreList.Count);
             fs.Close();
 
-            //we will Block the "Add" Button
+            //we will block and hide the "Add" Button
             ButtonAddScore.IsEnabled = false;
+            ButtonAddScore.Visibility = Visibility.Hidden;
+
+            //we will show button "Exit"
+            ButtonExit.IsEnabled = true;
+            ButtonExit.Visibility = Visibility.Visible;
 
             ShowScore();
 
         }
 
+        /// <summary>
+        /// This function will be executed at clicking on "Add" Button on HighScoreWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonAddScore_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewScore();
+            ShowScore();
+        }
+
+        /// <summary>
+        /// close HighScoreWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// cathing the "Up" key to add new score/exit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (ButtonAddScore.IsEnabled && e.Key==Key.Up)
+            {
+                AddNewScore();
+            }
+            else if (!ButtonAddScore.IsEnabled && e.Key == Key.Up)
+            {
+                Close();
+            }
+        }
     }
 }

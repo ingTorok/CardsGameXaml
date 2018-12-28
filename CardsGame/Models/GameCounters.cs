@@ -21,7 +21,7 @@ namespace CardsGame.Models
         /// <summary>
         /// Reached points
         /// </summary>
-        public int TotalPoints { get; private set; } = 0;
+        public long TotalPoints { get; private set; } = 0;
 
         /// <summary>
         /// Variable to hold the best streak
