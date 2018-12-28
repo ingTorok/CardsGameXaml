@@ -22,15 +22,11 @@ namespace CardsGame
     /// </summary>
     public partial class MainWindow : Window
     {
-        GameSpace GameSpace;
-        TopScoreWindow TopScoreWindow;
+        GameSpace GameSpace; 
 
         public MainWindow()
         {
             InitializeComponent();
-            TopScoreWindow = new TopScoreWindow();
-            TopScoreWindow.Show();
-
         }
 
         /// <summary>

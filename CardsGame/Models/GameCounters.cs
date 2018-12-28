@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardsGame.Models
 {
-    class GameCounters
+    public class GameCounters
     {
         /// <summary>
         /// List of good or bad answers

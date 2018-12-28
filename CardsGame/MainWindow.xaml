@@ -96,7 +96,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button x:Name="ButtonPartially" Grid.Row="0" Grid.Column="1" IsEnabled="False"  Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="Button_Click">
+            <Button x:Name="ButtonPartially" Grid.Row="0" Grid.Column="1" IsEnabled="False"  Padding="10" Margin="10" MaxHeight="60" MaxWidth="120" Click="Button_Click" Visibility="Hidden" >
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <fa:FontAwesome Icon="ArrowDown" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>

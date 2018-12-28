@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using FontAwesome.WPF;
+using CardsGame.WPF;
 
 namespace CardsGame.Models
 {
@@ -46,7 +47,7 @@ namespace CardsGame.Models
         /// <summary>
         /// Gametime. Set to 45 sec
         /// </summary>
-        private double GameTime = 45;
+        private double GameTime = 5;
 
         /// <summary>
         /// Random for picking the cards to show
@@ -67,6 +68,11 @@ namespace CardsGame.Models
         /// Show if the game is Running or not
         /// </summary>
         public bool IsGame = false;
+
+        /// <summary>
+        /// Top Scores
+        /// </summary>
+        HighScoreWindow TopScores;
 
         /// <summary>
         /// Constructor, on creation get the MainWindow
@@ -360,6 +366,7 @@ namespace CardsGame.Models
             PendulumClock.Stop();
             DisableButtons();
             IsGame = false;
+            TopScores= new HighScoreWindow(GameCounters);
         }
     }
 }
