@@ -73,7 +73,7 @@ namespace CardsGame.WPF
             Score.TotalPoints = GameCounters.TotalPoints;
             Score.BestStreak = GameCounters.BestStreak.ToString();
             Score.GameDate = DateTime.Now.ToString("dd/MM/yyyy");
-            Score.BestReaction = "100";
+            Score.BestReaction = GameCounters.BestReactionTime;
         }
 
         /// <summary>
@@ -173,10 +173,9 @@ namespace CardsGame.WPF
         /// </summary>
         private void AddNewScore()
         {
-            //todo: irja ki hogy nem lehet a nevben ";"
-
             if (TextBoxName.Text.Contains(";"))
             {//the textbox can't contain ";", because the string splitcharachter is ";"
+                MessageBox.Show("The name can't contain \";\" !");
                 return;
             }
             else
@@ -219,6 +218,8 @@ namespace CardsGame.WPF
             ButtonExit.IsEnabled = true;
             ButtonExit.Visibility = Visibility.Visible;
 
+            TextBoxName.IsEnabled = false;
+
             ShowScore();
 
         }
@@ -245,17 +246,21 @@ namespace CardsGame.WPF
         }
 
         /// <summary>
-        /// cathing the "Up" key to add new score/exit
+        /// cathing the "Enter" key to add new score/exit
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (ButtonAddScore.IsEnabled && e.Key==Key.Up)
+            if (ButtonAddScore.IsEnabled &&  e.Key == Key.Enter)
             {
                 AddNewScore();
             }
-            else if (!ButtonAddScore.IsEnabled && e.Key == Key.Up)
+            else if (!ButtonAddScore.IsEnabled && e.Key == Key.Enter)
+            {
+                Close();
+            }
+            else if (e.Key == Key.Escape)
             {
                 Close();
             }

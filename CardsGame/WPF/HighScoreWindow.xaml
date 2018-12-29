@@ -265,7 +265,7 @@
         <Button x:Name="ButtonAddScore" Grid.Column="5" Grid.Row="2" Margin="2" Click="ButtonAddScore_Click">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <fa:FontAwesome Icon="ArrowUp" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <fa:FontAwesome Icon="LevelDown" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Rotation="90"/>
                     <Label Content="Add Score" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button.Content>
@@ -275,7 +275,7 @@
         <Button x:Name="ButtonExit" Grid.Column="5" Grid.Row="2" Margin="2" Click="ButtonExit_Click" Visibility="Hidden" IsEnabled="False">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <fa:FontAwesome Icon="ArrowUp" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <fa:FontAwesome Icon="LevelDown" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Rotation="90"/>
                     <Label Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button.Content>

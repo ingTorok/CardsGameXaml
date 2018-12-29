@@ -29,9 +29,14 @@ namespace CardsGame.Models
         public int BestStreak { get; private set; } = 0;
 
         /// <summary>
-        /// Variable to hole the worst streak
+        /// Variable to hold the worst streak
         /// </summary>
         public int WorstStreak { get; private set; } = 0;
+
+        /// <summary>
+        /// Variable to hold the best reaktion time
+        /// </summary>
+        public string BestReactionTime { get;  set; }
 
         /// <summary>
         /// Counting the Streak for good and bad answers

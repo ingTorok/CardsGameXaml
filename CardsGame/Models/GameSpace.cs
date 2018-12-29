@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using System.Windows.Controls;
 using FontAwesome.WPF;
 using CardsGame.WPF;
+using System.Diagnostics;
 
 namespace CardsGame.Models
 {
@@ -45,9 +46,14 @@ namespace CardsGame.Models
         private DispatcherTimer CountDownClock;
 
         /// <summary>
-        /// Gametime. Set to 45 sec
+        /// Variable to hold the reactiontime
         /// </summary>
-        private double GameTime = 5;
+        private Stopwatch stopwatch;
+
+        /// <summary>
+        /// Gametime. Set to 30 sec
+        /// </summary>
+        private double GameTime = 30;
 
         /// <summary>
         /// Random for picking the cards to show
@@ -88,6 +94,7 @@ namespace CardsGame.Models
             this.MainWindow = mainWindow;
             SetNewGameCounters();          
             CardDeck = new CardDeck();
+            stopwatch = new Stopwatch();
             EnableButtons();
             ShowNewCard();
         }
@@ -101,6 +108,7 @@ namespace CardsGame.Models
             isCountdown = false;
             SetPendulumClock();
             ShowNewCard();
+            stopwatch.Restart();
             MainWindow.ViewboxStartCountDown.Visibility = Visibility.Hidden;
         }
 
@@ -254,7 +262,7 @@ namespace CardsGame.Models
                         MainWindow.CardPlaceRight.Icon = CardDeck.Cards[number];
                     }
                     
-                }              
+                }
             }
             
         }
@@ -334,12 +342,14 @@ namespace CardsGame.Models
         /// </summary>
         private void TheAnswerIsGood()
         {
-            MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Check;
+            GameCounters.BestReactionTime = stopwatch.ElapsedMilliseconds.ToString(); //read the reactiontime
+            MainWindow.CardPlaceLeft.Icon = FontAwesomeIcon.Check;                  
             MainWindow.CardPlaceLeft.Foreground = Brushes.Green;
             HidingAnswer();
             GameCounters.CountStreak(true);
             GameCounters.CountPoints();
             ShowGameCounters();
+            stopwatch.Restart(); //restart stopwatch for reactiontime
         }
 
         /// <summary>
@@ -353,6 +363,7 @@ namespace CardsGame.Models
             GameCounters.CountStreak(false);
             GameCounters.CountPoints();
             ShowGameCounters();
+            stopwatch.Restart(); //restart stopwatch for reactiontime
         }
 
         /// <summary>
